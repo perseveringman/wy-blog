@@ -6,7 +6,7 @@ import { getAlbums, getPhotosByAlbumId } from '~/supabase/supabase'
 export async function getStaticPaths() {
   const albums = await getAlbums()
 
-  return albums.map((album) => ({
+  return albums.map((album: any) => ({
     params: { albumId: album.id.toString() },
     props: { album },
   }))

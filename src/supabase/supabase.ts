@@ -18,7 +18,7 @@ export async function getAlbums() {
 }
 
 // 获取特定相册的照片
-export async function getPhotosByAlbumId(albumId) {
+export async function getPhotosByAlbumId(albumId: string) {
   const { data, error } = await supabase
     .from('photos')
     .select('*')
