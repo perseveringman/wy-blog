@@ -1,0 +1,31 @@
+---
+import LayoutDefault from '~/layouts/LayoutDefault.astro'
+import PhotoGrid from '../../components/photos/PhotoGrid.astro'
+import { getAlbums, getPhotosByAlbumId } from '~/supabase/supabase'
+
+export async function getStaticPaths() {
+  const albums = await getAlbums()
+
+  return albums.map((album) => ({
+    params: { albumId: album.id.toString() },
+    props: { album },
+  }))
+}
+
+const { albumId } = Astro.params
+const { album } = Astro.props
+const photos = await getPhotosByAlbumId(albumId)
+---
+
+<LayoutDefault title={album.title}>
+  <main class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+      <a href="/photos" class="text-primary hover:underline">&larr; 返回相册列表</a>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-2">{album.title}</h1>
+    <p class="text-gray-600 dark:text-gray-300 mb-8">{album.description}</p>
+
+    <PhotoGrid photos={photos} />
+  </main>
+</LayoutDefault>

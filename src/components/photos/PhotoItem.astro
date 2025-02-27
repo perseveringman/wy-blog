@@ -1,0 +1,46 @@
+---
+const { photo } = Astro.props
+const { title, description, url, exif } = photo
+
+// 格式化EXIF信息显示
+const formattedExif = exif
+  ? {
+      相机: exif.camera || '未知',
+      镜头: exif.lens || '未知',
+      焦距: exif.focalLength ? `${exif.focalLength}mm` : '未知',
+      光圈: exif.aperture ? `f/${exif.aperture}` : '未知',
+      快门: exif.shutterSpeed || '未知',
+      ISO: exif.iso || '未知',
+    }
+  : null
+---
+
+<div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow">
+  <div class="relative group">
+    <img src={url} alt={title || '照片'} loading="lazy" class="w-full h-64 object-cover" />
+    <div
+      class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-100"
+    >
+      <button class="bg-white text-black px-4 py-2 rounded-full">查看大图</button>
+    </div>
+  </div>
+
+  <div class="p-4">
+    {title && <h3 class="font-bold">{title}</h3>}
+    {description && <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">{description}</p>}
+
+    formattedExif && (
+    <div
+      class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400 grid grid-cols-2 gap-1"
+    >
+      {
+        Object.entries(formattedExif).map(([key, value]) => (
+          <div>
+            <span class="font-medium">{key}:</span> {value}
+          </div>
+        ))
+      }
+    </div>
+    ) }
+  </div>
+</div>

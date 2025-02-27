@@ -1,0 +1,14 @@
+---
+import LayoutDefault from '~/layouts/LayoutDefault.astro'
+import AlbumList from '~/components/photos/AlbumList.astro'
+import { getAlbums } from '~/supabase/supabase'
+
+const albums = await getAlbums()
+---
+
+<LayoutDefault title="相册">
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">我的相册</h1>
+    <AlbumList albums={albums} />
+  </main>
+</LayoutDefault>
